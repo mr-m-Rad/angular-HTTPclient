@@ -21,14 +21,14 @@ export class PlacesService {
     return this.fetchPlaces('http://localhost:3000/user-places').pipe(
       tap((userPlaces) => {
         this.userPlaces.set(userPlaces);
-      })
+      }),
     );
   }
 
   addPlaceToUserPlaces(place: Place) {
     const prevPlaces = this.userPlaces();
     if (!prevPlaces.some((e) => e.id === place.id)) {
-      this.userPlaces.set([...prevPlaces!, place]);
+      this.userPlaces.set([...prevPlaces, place]);
     }
     return this.http
       .put('http://localhost:3000/user-places', {
@@ -38,7 +38,7 @@ export class PlacesService {
         catchError((error) => {
           this.userPlaces.set(prevPlaces);
           return throwError(() => new Error('error'));
-        })
+        }),
       );
   }
 
@@ -51,7 +51,7 @@ export class PlacesService {
         catchError(() => {
           this.userPlaces.set(prevPlaces);
           return throwError(() => new Error('error Removing a place'));
-        })
+        }),
       );
   }
 
